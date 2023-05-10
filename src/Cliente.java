@@ -51,6 +51,19 @@ public class Cliente{
         this.edad = edad;
         this.direccion = direccion;
     }
-    
+    public Cliente() {
+        this.nombre = "";
+        this.apellido_1 = "";
+        this.apelido_2 = "";
+        this.edad= 0;
+        this.direccion="";
+    }
+
+    @Override
+    public String toString() {
+        return "nombre=" + nombre + "\n apellido_1=" + apellido_1 + "\n apelido_2=" + apelido_2 + "\n edad="
+                + edad + "\n direccion=" + direccion;
+    }
+
 }
 

@@ -22,8 +22,52 @@ public class Main {
             ArrayList<Cliente> lista = new ArrayList<>();
             lista.addAll(Crea_clientes.lista_generada(leer.nextInt()));
             escritura_objetos.writeObject(lista);
+            leer.close();
         }
+        int exit = 9;
+        while(exit!=0){
+            System.out.println("Mostrar listado completo--> 1\nBuscar cliente por apellidos--> 2\nActualizar los datos de un cliente (solo dirección y edad)--> 3\nAñadir cliente--> 4\nExit--> 0");
+            Scanner leer = new Scanner(System.in);
+            exit=leer.nextInt();
+            switch(exit){
+                ArrayList<Cliente> lista = new ArrayList<>();
 
+                case 1:
+                while(lectura_objetos.available()>0){
+                    lista.add(lectura_objetos.readObject());
+                }
+                for(int i = 0; i<lista.size();i++){
+                    System.out.println(lista.get(i));
+                }
+                break;
+
+                case 2:
+                Cliente clients = new Clientes();
+                System.out.print("Primer apellido:");
+                String ape1 = leer.nextLine();
+                System.out.print("Segundo apellido");
+                String ape2 = leer.nextLine();
+                while(lectura_objetos.available()>0){
+                    clients = lectura_objetos.readObject();
+                    if(clients.getApellido_1().equals(ape1)){
+                        if(clients.getApelido_2().equals(ape2)){
+                            clients.toString();
+                            break;
+                        }
+                    }
+                }
+                if(lectura_objetos.available()==0){
+                    System.out.prinln("No hay ningún cliente con esos apellidos");
+                }
+                break;
+                case default: 
+                break;
+
+                case 3:
+                
+                
+            }
+        }
         
     }
 
