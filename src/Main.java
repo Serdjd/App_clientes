@@ -29,12 +29,16 @@ public class Main {
             System.out.println("Mostrar listado completo--> 1\nBuscar cliente por apellidos--> 2\nActualizar los datos de un cliente (solo dirección y edad)--> 3\nAñadir cliente--> 4\nExit--> 0");
             Scanner leer = new Scanner(System.in);
             exit=leer.nextInt();
-            switch(exit){
-                ArrayList<Cliente> lista = new ArrayList<>();
+            
+            ArrayList<Cliente> lista = new ArrayList<>();
+            Cliente clients = new Cliente();
+            String ape1,ape2;
+            switch(exit) {
+                
 
                 case 1:
                 while(lectura_objetos.available()>0){
-                    lista.add(lectura_objetos.readObject());
+                    lista.add((Cliente) lectura_objetos.readObject());
                 }
                 for(int i = 0; i<lista.size();i++){
                     System.out.println(lista.get(i));
@@ -42,13 +46,12 @@ public class Main {
                 break;
 
                 case 2:
-                Cliente clients = new Clientes();
                 System.out.print("Primer apellido:");
-                String ape1 = leer.nextLine();
+                ape1 = leer.nextLine();
                 System.out.print("Segundo apellido");
-                String ape2 = leer.nextLine();
+                ape2 = leer.nextLine();
                 while(lectura_objetos.available()>0){
-                    clients = lectura_objetos.readObject();
+                    clients = (Cliente) lectura_objetos.readObject();
                     if(clients.getApellido_1().equals(ape1)){
                         if(clients.getApelido_2().equals(ape2)){
                             clients.toString();
@@ -57,18 +60,74 @@ public class Main {
                     }
                 }
                 if(lectura_objetos.available()==0){
-                    System.out.prinln("No hay ningún cliente con esos apellidos");
+                    System.out.println("No hay ningún cliente con esos apellidos");
                 }
-                break;
-                case default: 
                 break;
 
                 case 3:
+                FileOutputStream escrituraReacer = new FileOutputStream(fichero);
+                ObjectOutputStream escritura_objetosReacer = new ObjectOutputStream(escrituraReacer);
+                ArrayList<Cliente> list = new ArrayList<>();
+                while(lectura_objetos.available()>0){
+                    list.add((Cliente) lectura_objetos.readObject());
+                }
                 
-                
+                System.out.print("Nombre: ");
+                String nomb = leer.nextLine();
+                System.out.print("Primer apellido:");
+                ape1 = leer.nextLine();
+                System.out.print("Segundo apellido");
+                ape2 = leer.nextLine();
+                for(int i=0; i<list.size();i++){
+                    if(lista.get(i).getNombre().equals(nomb)){
+                        if(lista.get(i).getApellido_1().equals(ape1)){
+                            if(lista.get(i).getApelido_2().equals(ape2)){
+                                System.out.print("Nueva edad:");
+                                lista.get(i).setEdad(leer.nextInt());
+
+                                System.out.print("Nueva dirección: ");
+                                lista.get(i).setDireccion(leer.nextLine());
+
+                                escritura_objetosReacer.writeObject(list);
+                                break;
+                            }   
+                        }
+                    }
+                    if(i==list.size()){
+                    System.out.println("No existe ese cliente");
+                    break;
+                    }
+                }
+                escrituraReacer.close();
+                escritura_objetosReacer.close();
+                break;
+
+                case 4:
+                System.out.print("Nombre: ");
+                clients.setNombre(leer.nextLine());
+                System.out.print("Primer apellido: ");
+                clients.setApellido_1(leer.nextLine());
+                System.out.print("Segundo apellido: ");
+                clients.setApelido_2(leer.nextLine());
+                System.out.print("Dirección: ");
+                clients.setDireccion(leer.nextLine());
+                leer.nextLine();
+                System.out.print("Edad: ");
+                clients.setEdad(leer.nextInt());
+                escritura_objetos.writeObject(clients);
+                break;
+
+                default: 
+                    System.out.println("Número no valido");
+                break;
+                 
             }
+            leer.close();
         }
-        
+        escritura_objetos.close();
+        escritura.close();
+        lectura.close();
+        lectura_objetos.close();
     }
 
 
