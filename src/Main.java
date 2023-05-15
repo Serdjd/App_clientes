@@ -13,12 +13,13 @@ public class Main {
             System.exit(0);
         }
         FileOutputStream escritura = new FileOutputStream(fichero);
-        FileInputStream lectura = new FileInputStream(fichero);
+
         ObjectOutputStream escritura_objetos;
+        Scanner leer = new Scanner(System.in);
         
         if(fichero.length() == 0){
             escritura_objetos = new ObjectOutputStream(escritura);
-            Scanner leer = new Scanner(System.in);
+            
             System.out.print("Número de clientes: ");
             ArrayList<Cliente> lista = new ArrayList<>();
             lista.addAll(Crea_clientes.lista_generada(leer.nextInt()));
@@ -28,14 +29,12 @@ public class Main {
             
             escritura_objetos.close();
             leer.nextLine();
-            leer.close();
         }
         int exit = 9;
         while(exit!=0){
-            Scanner leer = new Scanner(System.in);
             System.out.println("Mostrar listado completo--> 1\nBuscar cliente por apellidos--> 2\nActualizar los datos de un cliente (solo dirección y edad)--> 3\nAñadir cliente--> 4\nExit--> 0");
             exit=leer.nextInt();
-            ObjectInputStream lectura_objetos;
+            leer.nextLine();
             ArrayList<Cliente> lista = new ArrayList<>();
             Cliente clients = new Cliente();
             String ape1,ape2;
@@ -43,48 +42,53 @@ public class Main {
                 
 
                 case 1:
-                lectura_objetos = new ObjectInputStream(lectura);
+                    FileInputStream lectura1 = new FileInputStream(fichero);
+                    ObjectInputStream lectura_objetos1 = new ObjectInputStream(lectura1);
                 
-                while(lectura_objetos.available()>0){
-                    lista.add((Cliente) lectura_objetos.readObject());
+                while(lectura1.available()>0){
+                    lista.add((Cliente) lectura_objetos1.readObject());
                 }
                 for(int i = 0; i<lista.size();i++){
-                    System.out.println(lista.get(i));
+                    System.out.println(lista.get(i).toString());
                 }
-                lectura_objetos.close();
+                lectura_objetos1.close();
+                lectura1.close();
                 break;
 
                 case 2:
-                lectura_objetos = new ObjectInputStream(lectura);
-                
+                    boolean haycliente = false;
+                    FileInputStream lectura2 = new FileInputStream(fichero);
+                    ObjectInputStream lectura_objetos2 = new ObjectInputStream(lectura2);
                 System.out.print("Primer apellido:");
                 ape1 = leer.nextLine();
-                System.out.print("Segundo apellido");
+                System.out.print("Segundo apellido:");
                 ape2 = leer.nextLine();
-                while(lectura_objetos.available()>0){
-                    clients = (Cliente) lectura_objetos.readObject();
+                while(lectura2.available()>0){
+                    clients = (Cliente) lectura_objetos2.readObject();
                     if(clients.getApellido_1().equals(ape1)){
                         if(clients.getApelido_2().equals(ape2)){
-                            clients.toString();
+                            System.out.println(clients.toString());
+                            haycliente=true;
                             break;
                         }
                     }
                 }
-                if(lectura_objetos.available()==0){
+                if(haycliente==false){
                     System.out.println("No hay ningún cliente con esos apellidos");
                 }
-                lectura_objetos.close();
+                lectura_objetos2.close();
+                lectura2.close();
                 break;
 
                 case 3:
+                    FileInputStream lectura3 = new FileInputStream(fichero);
                 FileOutputStream escrituraReacer = new FileOutputStream(fichero);
                 ObjectOutputStream escritura_objetosReacer = new ObjectOutputStream(escrituraReacer);
-                lectura_objetos = new ObjectInputStream(lectura);
+                    ObjectInputStream lectura_objetos3 = new ObjectInputStream(lectura3);
                 ArrayList<Cliente> list = new ArrayList<>();
-                while(lectura_objetos.available()>0){
-                    list.add((Cliente) lectura_objetos.readObject());
+                while(lectura_objetos3.available()>0){
+                    list.add((Cliente) lectura_objetos3.readObject());
                 }
-                leer.nextLine();
                 System.out.print("Nombre: ");
                 String nomb = leer.nextLine();
                 System.out.print("Primer apellido:");
@@ -92,14 +96,14 @@ public class Main {
                 System.out.print("Segundo apellido");
                 ape2 = leer.nextLine();
                 for(int i=0; i<list.size();i++){
-                    if(lista.get(i).getNombre().equals(nomb)){
-                        if(lista.get(i).getApellido_1().equals(ape1)){
-                            if(lista.get(i).getApelido_2().equals(ape2)){
+                    if(list.get(i).getNombre().equals(nomb)){
+                        if(list.get(i).getApellido_1().equals(ape1)){
+                            if(list.get(i).getApelido_2().equals(ape2)){
                                 System.out.print("Nueva edad:");
-                                lista.get(i).setEdad(leer.nextInt());
+                                list.get(i).setEdad(leer.nextInt());
 
                                 System.out.print("Nueva dirección: ");
-                                lista.get(i).setDireccion(leer.nextLine());
+                                list.get(i).setDireccion(leer.nextLine());
 
                                 //escritura_objetosReacer.writeObject(list);
                                 break;
@@ -113,7 +117,8 @@ public class Main {
                 }
                 escrituraReacer.close();
                 escritura_objetosReacer.close();
-                lectura_objetos.close();
+                lectura_objetos3.close();
+                lectura3.close();
                 break;
 
                 case 4:
@@ -139,13 +144,11 @@ public class Main {
                 default: 
                     System.out.println("Número no valido");
                 break;
-                 
+
             }
-            leer.close();
         }
-        
+        leer.close();
         escritura.close();
-        lectura.close();
     }
 
 
