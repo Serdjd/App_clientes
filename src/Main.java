@@ -12,22 +12,22 @@ public class Main {
             System.out.println("El archivo no existe");
             System.exit(0);
         }
-        FileOutputStream escritura = new FileOutputStream(fichero);
+        FileOutputStream escritura1 = new FileOutputStream(fichero,true);
 
-        ObjectOutputStream escritura_objetos;
+        ObjectOutputStream escritura_objetos1;
         Scanner leer = new Scanner(System.in);
         
         if(fichero.length() == 0){
-            escritura_objetos = new ObjectOutputStream(escritura);
+            escritura_objetos1 = new ObjectOutputStream(escritura1);
             
             System.out.print("Número de clientes: ");
             ArrayList<Cliente> lista = new ArrayList<>();
             lista.addAll(Crea_clientes.lista_generada(leer.nextInt()));
             for(int i = 0;i<lista.size();i++){
-                escritura_objetos.writeObject(lista.get(i));
+                escritura_objetos1.writeObject(lista.get(i));
             }
             
-            escritura_objetos.close();
+            escritura_objetos1.close();
             leer.nextLine();
         }
         int exit = 9;
@@ -39,12 +39,12 @@ public class Main {
             Cliente clients = new Cliente();
             String ape1,ape2;
             switch(exit) {
-                
+
 
                 case 1:
                     FileInputStream lectura1 = new FileInputStream(fichero);
                     ObjectInputStream lectura_objetos1 = new ObjectInputStream(lectura1);
-                
+
                 while(lectura1.available()>0){
                     lista.add((Cliente) lectura_objetos1.readObject());
                 }
@@ -73,7 +73,7 @@ public class Main {
                         }
                     }
                 }
-                if(haycliente==false){
+                if(!haycliente){
                     System.out.println("No hay ningún cliente con esos apellidos");
                 }
                 lectura_objetos2.close();
@@ -82,32 +82,37 @@ public class Main {
 
                 case 3:
                     FileInputStream lectura3 = new FileInputStream(fichero);
-                FileOutputStream escrituraReacer = new FileOutputStream(fichero);
-                ObjectOutputStream escritura_objetosReacer = new ObjectOutputStream(escrituraReacer);
                     ObjectInputStream lectura_objetos3 = new ObjectInputStream(lectura3);
                 ArrayList<Cliente> list = new ArrayList<>();
-                while(lectura_objetos3.available()>0){
+                while(lectura3.available()>0){
                     list.add((Cliente) lectura_objetos3.readObject());
                 }
-                System.out.print("Nombre: ");
+                System.out.print("Nombre:");
                 String nomb = leer.nextLine();
                 System.out.print("Primer apellido:");
                 ape1 = leer.nextLine();
-                System.out.print("Segundo apellido");
+                System.out.print("Segundo apellido:");
                 ape2 = leer.nextLine();
                 for(int i=0; i<list.size();i++){
                     if(list.get(i).getNombre().equals(nomb)){
+                        System.out.print("a");
                         if(list.get(i).getApellido_1().equals(ape1)){
+                            System.out.print("a");
                             if(list.get(i).getApelido_2().equals(ape2)){
+                                FileOutputStream escrituraReacer = new FileOutputStream(fichero);
+                                ObjectOutputStream escritura_objetosReacer = new ObjectOutputStream(escrituraReacer);
                                 System.out.print("Nueva edad:");
                                 list.get(i).setEdad(leer.nextInt());
-
-                                System.out.print("Nueva dirección: ");
+                                leer.nextLine();
+                                System.out.print("Nueva dirección:");
                                 list.get(i).setDireccion(leer.nextLine());
-
-                                //escritura_objetosReacer.writeObject(list);
+                                for(int j=0;j<list.size();j++){
+                                    escritura_objetosReacer.writeObject(list.get(j));
+                                }
+                                escrituraReacer.close();
+                                escritura_objetosReacer.close();
                                 break;
-                            }   
+                            }
                         }
                     }
                     if(i==list.size()){
@@ -115,15 +120,15 @@ public class Main {
                     break;
                     }
                 }
-                escrituraReacer.close();
-                escritura_objetosReacer.close();
+
                 lectura_objetos3.close();
                 lectura3.close();
                 break;
 
                 case 4:
-                escritura_objetos = new ObjectOutputStream(escritura);
-                
+                    FileOutputStream escritura = new FileOutputStream(fichero);
+                ObjectOutputStream escritura_objetos = new ObjectOutputStream(escritura);
+
                 System.out.print("Nombre: ");
                 clients.setNombre(leer.nextLine());
                 System.out.print("Primer apellido: ");
@@ -132,23 +137,22 @@ public class Main {
                 clients.setApelido_2(leer.nextLine());
                 System.out.print("Dirección: ");
                 clients.setDireccion(leer.nextLine());
-                leer.nextLine();
                 System.out.print("Edad: ");
                 clients.setEdad(leer.nextInt());
                 escritura_objetos.writeObject(clients);
-                
+
+                escritura.close();
                 escritura_objetos.close();
 
                 break;
 
-                default: 
-                    System.out.println("Número no valido");
+                default:
                 break;
 
             }
         }
         leer.close();
-        escritura.close();
+
     }
 
 
