@@ -1,4 +1,4 @@
-public class Cliente{
+public class Cliente implements java.io.Serializable{
     private String nombre;
     private String apellido_1;
     private String apelido_2;
