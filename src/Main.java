@@ -7,7 +7,7 @@ import java.util.ArrayList;
 import java.util.Scanner;
 public class Main {
     public static void main(String[] args) throws Exception{
-        File fichero = new File("/home/serdjd_05/datos.bin");
+        File fichero = new File("D:\\Datos.bin");
         if(!fichero.exists()){
             System.out.println("El archivo no existe");
             System.exit(0);
